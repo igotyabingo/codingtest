@@ -34,5 +34,17 @@ def check(word):
                 return False
         else:
             return False
-    
+
     return True
+
+# 훨씬 깔끔한 코드
+
+def solution(babbling):
+    answer = 0
+    for i in babbling:
+        for j in ['aya','ye','woo','ma']:
+            if j*2 not in i:
+                i=i.replace(j,' ')    # 4가지의 각 패턴에 대해 연속하는 경우를 확인하고, 각 패턴을 모두 공백으로 치환시킨다.
+        if len(i.strip())==0:    # 공백 제거 했을 때의 길이가 0인 경우 패턴만 존재하는 것이므로 answer을 1 증가시킨다.
+            answer +=1
+    return answer
