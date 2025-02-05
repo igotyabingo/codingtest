@@ -31,6 +31,6 @@ def solution(dartResult):
     
     return sum(score)
 
-# 정규 표현식을 더 깔끔하게 사용할 수 있다.
-p = re.compile('(\d+)([SDT])([*#]?)')
-    dart = p.findall(dartResult)
+# 정규 표현식을 다음과 같이 사용하여 더 깔끔하게 구현할 수 있다.
+# p = re.compile('(\d+)([SDT])([*#]?)')
+# dart = p.findall(dartResult)
