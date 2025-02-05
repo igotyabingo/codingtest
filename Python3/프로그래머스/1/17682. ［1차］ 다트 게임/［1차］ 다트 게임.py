@@ -30,3 +30,7 @@ def solution(dartResult):
             ind = k+1
     
     return sum(score)
+
+# 정규 표현식을 더 깔끔하게 사용할 수 있다.
+p = re.compile('(\d+)([SDT])([*#]?)')
+    dart = p.findall(dartResult)
