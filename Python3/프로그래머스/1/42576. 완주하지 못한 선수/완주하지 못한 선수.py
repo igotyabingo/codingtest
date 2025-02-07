@@ -26,3 +26,13 @@ def solution(participant, completion):
         for i in participant:
             if dic[i] != dic2[i]:
                 return i
+
+'''
+카운터 객체(원소와 원소의 등장횟수를 쉽게 셀 수 있다)를 생성하여 간결하게 코드를 작성할 수 있다.
+import collections
+
+
+def solution(participant, completion):
+    answer = collections.Counter(participant) - collections.Counter(completion)
+    return list(answer.keys())[0]
+'''
