@@ -20,3 +20,5 @@ def solution(id_list, report, k):
                 answer[user[j]] += 1
 
     return answer
+
+# set(report)를 통해 a->b 신고의 중복을 쉽게 제거할 수 있다.
