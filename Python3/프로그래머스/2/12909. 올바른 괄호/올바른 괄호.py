@@ -19,3 +19,16 @@ def solution(s):
             return False
         else:
             return True
+
+# i가 )일때는 스택에 굳이 원소를 추가하지 않고 짝지을 (가 있는지 확인하는 것만으로 충분하다. 
+# s를 끝까지 순회하지 않고도 빨리 끝낼 수 있다. 다음 코드의 예외처리문 형태를 확인하자.
+        '''
+        if c == '(':
+            st.append(c)
+
+        if c == ')':
+            try:
+                st.pop()
+            except IndexError:
+                return False
+        '''
