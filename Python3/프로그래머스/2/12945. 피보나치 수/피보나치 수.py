@@ -5,3 +5,10 @@ def solution(n):
         fib.append(fib[i-1]+fib[i-2])
     
     return fib[n]%1234567
+
+# 파이썬의 특징인 swap을 이용하여 더 쉽게 구현할 수 있다.
+'''
+a, b = 1, 0
+for i in range():
+    a, b = a+b, a
+'''
