@@ -11,3 +11,5 @@ def solution(k, tangerine):
         ans += 1
         if(c >= k):
             return ans
+
+# sorted(cnt.values(), reverse = True) 를 통해 value 기준으로 정렬하고 정렬된 value값만 리스트로 뽑아낼 수 있다.
