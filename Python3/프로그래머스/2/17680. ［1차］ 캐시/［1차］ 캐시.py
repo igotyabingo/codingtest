@@ -19,3 +19,5 @@ def solution(cacheSize, cities):
         cache.append(i)
     
     return answer
+
+# cache = collections.deque(maxlen=cacheSize)
