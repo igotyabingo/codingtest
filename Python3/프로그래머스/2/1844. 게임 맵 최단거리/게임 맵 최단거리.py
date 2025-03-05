@@ -11,11 +11,9 @@ def solution(maps):
             # 적 팀의 진영에 도착한 경우
             if ((x, y)==target):
                 return l+1
-            # visited[x][y] = l+1
             elif (0<=x<=target[0] and 0<=y<=target[1] and maps[x][y]==1 and  
                  l+1 < visited[x][y]):
                 # 경계 내부이고 이동할 수 있는 칸이면
                 queue.append((x, y, l+1))
                 visited[x][y] = l+1
-
-    return -1 if visited[target[0]][target[1]]==1000000 else visited[target[0]][target[1]]
+    return -1 
