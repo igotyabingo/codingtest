@@ -1,24 +1,15 @@
 def solution(order):
-    answer = 0
-    stack = []  # 보조 컨테이너 벨트
-    processing = 1
-
-    for target in order:
-    # 조건문을 깔끔하게 분기하자.
-        if processing == target:
-            processing += 1
-            answer += 1
-        elif (stack and stack[-1] == target):
-            answer += 1
+    answer = 0 
+    stack = []  # 보조 벨트
+    
+    for i in range(1, len(order)+1):
+        stack.append(i)   # 메인 벨트 처리
+        
+        # 반복문 변수 설정과, stack - while문 사용
+        while (stack and stack[-1] == order[answer]):   
+            # order[answer]로 아직 처리되지 않은 order 순차적으로 해결 **
             stack.pop()
-        # 위에서 target이 처리되는 경우를 모두 처리 함. 이 밑은 처리 못하는 경우
-        elif (target > processing):
-            while(target != processing):
-                stack.append(processing)
-                processing += 1
             answer += 1
-            processing += 1
-        else:
-            break
-
+        
+        
     return answer
