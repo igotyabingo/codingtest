@@ -11,11 +11,8 @@ def solution(expression):
     answer = max(answer, c1, c2)
     
     a = last_solve('-', expression)
-    print(a)
     b1 = last_solve('+', a)
-    print(b1)
     b2 = last_solve('*', a)
-    print(b2)
     c1 = abs(int(last_solve('*', b1)))
     c2 = abs(int(last_solve('+', b2)))
     answer = max(answer, c1, c2)
