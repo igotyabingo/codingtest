@@ -1,24 +1,25 @@
 from collections import defaultdict
 
 def solution(tickets):
-    # DFS 사용한다.
-    answer = []
+    # 사전순으로 빠른 '한' 경로만 찾는다. 를 이용하면 간단해진다. : 오일러 경로 - Hierholzer’s Algorithm
     graph = defaultdict(list)
 
-    for i, ticket in enumerate(tickets):
-        a, b = ticket
-        graph[a].append((b, i))
-    path = [(['ICN'],[])]
+    for a, b in tickets:
+        graph[a].append(b)
+    
+    for key in graph:
+        graph[key].sort()
+    
+    path = ['ICN']
     answer = []
 
     while path:
-        target = path.pop(0)
-        neighbors = graph[target[0][-1]]
-        for n, i in neighbors:
-            if i not in target[1]:
-                if len(target[0]) == len(tickets):
-                    answer.append(target[0]+[n])
-                else:
-                    path.append((target[0]+[n], target[1]+[i]))
+        current = path[-1]
 
-    return sorted(answer)[0]
+        if graph[current] != []:
+            path.append(graph[current].pop(0))
+        else:
+            # 백트래킹의 개념: 더이상 갈곳이 없으면 마지막 원소임이 보장된다, 그 전 원소부터 다시 탐색
+            answer.append(path.pop())
+    
+    return answer[::-1]
