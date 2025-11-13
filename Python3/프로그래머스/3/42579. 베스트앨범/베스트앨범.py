@@ -1,22 +1,21 @@
 def solution(genres, plays):
     answer = []
-    dic = dict()
-    # key: 장르명, value: [총재생수, [(고유번호, 재생수)]]
-
-    for i in range(len(genres)):
-        if genres[i] in dic:
-            dic[genres[i]][0] += plays[i]
-            dic[genres[i]][1].append((i, plays[i]))
-        else:
-            dic[genres[i]] = [plays[i], [(i, plays[i])]]
-
-    genre_rank = sorted(dic, reverse=True, key=lambda x: dic[x][0])
-
-    for genre in genre_rank:
-        dic[genre][1].sort(key=lambda x: x[0])
-        dic[genre][1].sort(reverse=True, key=lambda x: x[1])
-
-        for value in dic[genre][1][:2]:
-            answer.append(value[0])
     
+    count = dict()
+    # count[classic] = {count합, [(수록곡, count)]}
+    # 1. count합 기준으로 장르 정렬
+    # 2. 수록곡 list 정렬
+    
+    for i, genre in enumerate(genres):
+        if genre not in count:
+            count[genre] = [0, []]
+        count[genre][0] += plays[i]
+        count[genre][1].append((i, plays[i]))
+    
+    count = dict(sorted(count.items(), key=lambda x:x[1][0], reverse=True))
+    for lst in count.values():
+        pieces = sorted(lst[1], key=lambda x:(x[1], -x[0]), reverse=True)
+        for piece in pieces[:2]:
+            answer.append(piece[0])
+            
     return answer
