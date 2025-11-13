@@ -1,14 +1,13 @@
-def solution(clothes):
-    # 의상 종류에 따른 카운터 딕셔너리 생성
-    closet = dict()
-    for i in clothes:
-        if i[1] in closet:
-            closet[i[1]] += 1
-        else:
-            closet[i[1]] = 1
-    
-    mul = 1
-    for i in closet.values():
-        mul*=(i+1)
+from collections import defaultdict
 
-    return mul-1
+def solution(clothes):
+    # 각 종류별로 원소 수(a, b) 구하기 -> (a+1)(b+1) -1
+    count = defaultdict(int)
+    # 일단 한번 순회해야 함
+    for cloth in clothes:
+        count[cloth[1]] += 1
+    
+    answer = 1
+    for c in count.values():
+        answer *= (c+1)
+    return answer-1
