@@ -1,25 +1,28 @@
-def solution(progresses, speeds):
-    answer = []
-    l = len(progresses)
-    # 각각 몇일 걸리는지 계산
-    days = [0 for _ in range(l)]
-    for i in range(l):
-        days[i] = (100-progresses[i])//speeds[i]
-        if((100-progresses[i])%speeds[i] != 0):
-            days[i] += 1
-    arm = 0 # '부터' 배포해야 함을 표시하는 포인터 ('큐')
-    stand = days[0] # 배포하지 않은 것중 가장 앞의 기능의 소요 일수
+from collections import deque
+import math
 
-    while(arm < l):
-        for i in range(arm+1, l):
-            if(days[i]>stand):
-                break
-        if(i== l-1 and days[-1]<= stand):
-            answer.append(i-arm+1)
-            break
+def solution(progresses, speeds):
+    # queue 자료구조 이용
+    # 각 작업: 몇일 후에 배포 가능한 지부터 계산
+    # 앞의 원소 >= 뒤의 원소 일 경우 한꺼번에 나감, 아니면 따로
+    
+    answer = []
+    
+    n = len(progresses)
+    days = []
+    
+    for i in range(n):
+        days.append(math.ceil((100-progresses[i])/speeds[i]))
+
+    days = deque(days)
+    day, k = days.popleft(), 1
+    while days:
+        if day >= days[0]:
+            days.popleft()
+            k += 1
         else:
-            answer.append(i-arm)
-            arm = i
-            stand = days[i]
-        
+            answer.append(k)
+            day, k = days.popleft(), 1
+            
+    answer.append(k)
     return answer
