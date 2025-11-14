@@ -1,29 +1,29 @@
-import heapq
+from heapq import heappush, heappop, heapify
+from collections import deque
 
 def solution(jobs):
-    jobs.sort()
-    minheap = []
+    time = 0 
     n = len(jobs)
-    answer = 0 # 모든 소요시간 합
-    count = 0
+    # heapq = 대기 큐 => (작업 소요시간, 작업 요청시각, 작업 번호)로 저장 후 우선순위 비교
+    lst = []
+    
+    job_list = deque()
+    jobs.sort(key=lambda x: x[0])
+    for i, job in enumerate(jobs):
+        job_list.append((job[1], job[0], i))
 
-    while count < n:
-        if not minheap: # 대기열이 비어있을 때 -> '점프'
-            t = jobs[0][0] # t 시점으로 점프해서 t 시점에 들어오는 모든 job을 대기열에 저장한다.
-            while jobs and jobs[0][0] == t:
-                x, y = jobs.pop(0)
-                heapq.heappush(minheap, (y, x))
-
-        # 그럼 이제 대기열이 채워진다. 하나씩만 뺀다: 해당 작업을 시작한다.
-        dt, start = heapq.heappop(minheap)
-        t += dt # t초로부터 dt초 동안 작업을 수행한다.
-
-        while jobs and jobs[0][0] <= t:
-            x, y = jobs.pop(0)
-            heapq.heappush(minheap, (y, x))
-
-        # 현재 진행 중인 작업을 끝내고(answer 변수 업데이트), 다음 진행할 작업을 골라낸다.(t 업데이트)
-        answer += (t-start)
-        count += 1
-
-    return answer//n
+    t = 0
+    while job_list or lst: # 초 단위로 수행
+        # 1. 대기 큐에 삽입
+        while job_list and job_list[0][1] <= t:
+            heappush(lst, job_list.popleft())
+        
+        # 2. 하나 뽑기
+        if lst: 
+            x, y, z = heappop(lst)
+            t += x
+            time += (t-y)
+        else:
+            t += 1
+    
+    return time // n
