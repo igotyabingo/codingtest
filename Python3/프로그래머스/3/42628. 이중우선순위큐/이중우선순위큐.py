@@ -1,42 +1,37 @@
-import heapq
+from heapq import heapify, heappop, heappush
 
 def solution(operations):
-    idx = 0
-    maxheap = []
-    minheap = []
-    dic = []
-
-    for o in operations:
-        if o[0] == 'I':
-            num = int(o[2:])
-            heapq.heappush(minheap, (num, idx))
-            heapq.heappush(maxheap, (-num, idx))
-            idx += 1
-            dic.append(True)
+    visited = set()
+    minheap, maxheap = [], []
+    
+    for i, operation in enumerate(operations):
+        if operation[0] == "I":
+            num = int(operation[2:])
+            heappush(minheap, (num, i))
+            heappush(maxheap, (-num, i))
         else:
-            if o[2] == '-':
-                while minheap and not dic[minheap[0][1]]:
-                    heapq.heappop(minheap)
-                if minheap:
-                    _, x = heapq.heappop(minheap)
-                    dic[x] = False
-            else:
-                while maxheap and not dic[maxheap[0][1]]:
-                    heapq.heappop(maxheap)
-                if maxheap:
-                    _, x = heapq.heappop(maxheap)
-                    dic[x] = False
-
-    while minheap and dic[minheap[0][1]]==False:
-        heapq.heappop(minheap)
-    if minheap: 
-        min = minheap[0][0]
-    else:
-        return [0, 0]
+            if operation[2] == '-': # 최솟값 삭제
+                while minheap:
+                    x, idx = heappop(minheap)
+                    if idx not in visited:
+                        visited.add(idx)
+                        break
+            else: # 최댓값 삭제
+                while maxheap:
+                    x, idx = heappop(maxheap)
+                    if idx not in visited:
+                        visited.add(idx)
+                        break
+    max_value, min_value = 0, 0
+    while maxheap:
+        x, idx = heappop(maxheap)
+        if idx not in visited:
+            max_value = -x
+            break
+    while minheap:
+        x, idx = heappop(minheap)
+        if idx not in visited:
+            min_value = x
+            break
     
-    while maxheap and dic[maxheap[0][1]]==False:
-        heapq.heappop(maxheap)
-    if maxheap:
-        max = -maxheap[0][0]
-    
-    return [max, min]
+    return [max_value, min_value]
