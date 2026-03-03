@@ -2,27 +2,22 @@ from collections import deque
 import math
 
 def solution(progresses, speeds):
-    # queue 자료구조 이용
-    # 각 작업: 몇일 후에 배포 가능한 지부터 계산
-    # 앞의 원소 >= 뒤의 원소 일 경우 한꺼번에 나감, 아니면 따로
-    
+    # use queue. 반드시 처음 들어온 원소가 먼저 나갈 수 있다.
     answer = []
     
-    n = len(progresses)
-    days = []
-    
-    for i in range(n):
+    # 미리 필요한 일수를 계산해둔다.
+    days = deque()
+    for i in range(len(progresses)):
         days.append(math.ceil((100-progresses[i])/speeds[i]))
-
-    days = deque(days)
-    day, k = days.popleft(), 1
+    # 기준과 첫번째 원소를 비교한다.
+    target, count = days.popleft(), 1
     while days:
-        if day >= days[0]:
+        if target >= days[0]:
+            count += 1
             days.popleft()
-            k += 1
         else:
-            answer.append(k)
-            day, k = days.popleft(), 1
-            
-    answer.append(k)
-    return answer
+            answer.append(count)
+            target = days.popleft() # 새로운 기준이 된다.
+            count = 1
+        
+    return answer + [count]
