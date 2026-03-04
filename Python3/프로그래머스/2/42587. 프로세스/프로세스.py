@@ -1,27 +1,25 @@
-from collections import defaultdict, deque
+from collections import deque
 
 def solution(priorities, location):
-    # 우선순위 별 process 개수 저장
-    p = defaultdict(int)
-    queue = []
+    answer = 0
+    # priorities[location] process의 실행 순서 찾기
     
-    for i, pr in enumerate(priorities):
-        p[pr] += 1
-        queue.append((i, pr))
-        
-    queue = deque(queue)
-    mx = max(p)
+    # queue 순서대로 확인. "우선순위가 가장 높은 경우" 실행
+    # 그렇지 않을 경우 맨 뒤에 다시 삽입함
+    
+    ranks = deque(sorted(priorities, reverse=True))
+    
+    queue = deque()
+    for i, p in enumerate(priorities):
+        queue.append((i, p)) # (index, priority)
+    
     rank = 1
-    
     while queue:
-        x, y = queue.popleft()
-        if y < mx:
-            queue.append((x, y))
-        else: # y = mx
-            if location == x:
+        if ranks[0] == queue[0][1]:
+            if queue[0][0] == location:
                 return rank
-            p[mx] -= 1
-            if p[mx] == 0:
-                del p[mx]
-                mx = max(p)
+            ranks.popleft()
+            queue.popleft()
             rank += 1
+        else:
+            queue.append(queue.popleft())
