@@ -1,37 +1,30 @@
 from collections import deque
 
 def solution(bridge_length, weight, truck_weights):
-    # 새로 다리에 올라올 때는 1초에 한대씩만 올라올 수 있음
+    # use queue.
+    truck_weights = deque(truck_weights)
+    on_bridge = deque() # [(트럭 무게, 다리에 있었던 시간)]
+    # 매 초마다 확인해야 할 것
+    # 1. 다리에 있는 것들 다리에 있었던 시간+1 (초기화 = 0): 2면 내보냄
+    # 2. 개수 확인 -> 총 무게 확인
     
-    on_length = 0 # 다리 위에 있는 트럭 개수
-    on_weight = 0 # 다리 위에 있는 트럭 무게 합
-    on_time = deque([0]*bridge_length, maxlen = bridge_length) # 1초씩 이동 (각 원소: 트럭 무게)
-
-    t = 0
-    # 각 초마다 확인, 업데이트
-    trucks = deque(truck_weights)
-    out = 0
-    
-    while out < len(truck_weights): # 종료 조건
-        # 1. 다리를 다 지난 것 부터 빼기 ***
-        out_weight = on_time.popleft()
-        if out_weight != 0:   
-            on_weight -= out_weight
-            on_length -= 1
-            out += 1
-        # 2. 다리 올라올 수 있는 지 확인
-        if trucks:
-            if on_length + 1 <= bridge_length and on_weight + trucks[0] <= weight:
-                in_weight = trucks.popleft()
-                on_length += 1
-                on_weight += in_weight
-                on_time.append(in_weight)
+    sum_weights = 0
+    time = 0
+    while on_bridge or truck_weights:
+        l = len(on_bridge)
+        for _ in range(l): # 하나씩 확인한다는 의미
+            if on_bridge[0][1] == bridge_length-1:
+                sum_weights -= on_bridge[0][0]
+                on_bridge.popleft()
             else:
-                on_time.append(0)
-
-        # 3. 시간 +1
-        t +=1 
+                on_bridge.append((on_bridge[0][0], on_bridge[0][1]+1))
+                on_bridge.popleft()
         
+        if truck_weights and truck_weights[0] + sum_weights <= weight:
+            w = truck_weights.popleft()
+            on_bridge.append((w, 0))
+            sum_weights += w
+                
+        time += 1
     
-    return t
-        
+    return time
