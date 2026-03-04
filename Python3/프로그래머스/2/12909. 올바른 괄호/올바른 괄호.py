@@ -1,15 +1,15 @@
 def solution(s):
-    answer = True
-    # stack 자료구조 이용 -> 그냥 스택에 있는 원소 개수로만 판단해도 된다.
-    cnt = 0
-    # (는 스택에 넣음, )는 ( 하나를 pop시킴
-    for ch in s:
-        if ch == '(':
-            cnt += 1
+    # use stack. 무조건 빈 상태로 함수가 종료되어야 함
+    stack = []
+    
+    for c in s:
+        if c == '(': # (만 넣는다.
+            stack.append(1)
         else:
-            if cnt>0: 
-                cnt -=1
+            if stack: # (이 하나라도 있는 경우
+                stack.pop()
             else:
                 return False
-        
-    return True if cnt == 0 else False
+    
+    return True if not stack else False
+            
