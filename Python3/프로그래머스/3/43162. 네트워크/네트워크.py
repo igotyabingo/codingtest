@@ -1,27 +1,26 @@
+from collections import deque
+
 def solution(n, computers):
-    answer = set()
-    # union find 알고리즘
-    roots = [i for i in range(n)]
-    # 일단 처음은 각자 본인이 ROOT임
-
-    for idx, values in enumerate(computers):
-        for i in range(idx+1, n):
-            if values[i] == 1:
-                union(idx, i, roots)
-
-    for r in roots:
-        answer.add(find(r, roots))
+    visited = [False]*n
+    answer = 0
     
-    return len(answer)
-     
-
-def find(n, roots): 
-    while roots[n] != n:
-        n = roots[n]
-    
-    return n
-
-def union(i, j, roots):
-    roots_i, roots_j = find(i, roots), find(j, roots)
-    if roots_i != roots_j:
-        roots[roots_j] = roots_i
+    for i in range(n):
+        if visited[i]:
+            continue
+        
+        answer += 1
+        visited[i] = True
+        queue = deque([i])
+        
+        while queue:
+            cur = queue.popleft() # cur 기준 neighbor 탐색
+            
+            for j in range(n):
+                if computers[cur][j] == 1 and not visited[j]:
+                    queue.append(j)
+                    visited[j] = True
+        
+    return answer
+            
+            
+            
