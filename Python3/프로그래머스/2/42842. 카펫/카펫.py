@@ -1,10 +1,22 @@
 def solution(brown, yellow):
-    # yellow 직사각형이 a*b 크기일 때 [a+2, b+2]를 리턴해야 하고
-    # 2*(a+b) +4 = brown 격자 수
-    # 사실 이차방정식의 해를 구하면 바로 나온다.
-    # yellow를 두 수의 곱으로 나타낼 수 있는 것을 하나하나 brown 수 조건을 확인하면서 
+    answer = []
+    # yellow = (가로 - 2) * (세로 - 2)
+    # brown = (가로*세로) - yellow = 둘레 - 4 
     
-    for i in range(1, int(yellow**(1/2))+1):
-        if(yellow%i == 0):
-            if(2*(yellow//i + i)+4 == brown):
-                return [yellow//i +2, i+2]
+    # x + y = (brown + 4) // 2
+    # 모든 경우의 수 확인하기 (곱)
+    
+    # 소수 확인하는 것과 같이 [곱 -> 합] 확인
+    # 곱 = brown + yellow
+    # 합 = (brown + 4) // 2
+    
+    mul = brown + yellow
+    plus = (brown + 4) // 2
+    
+    target = int(mul**0.5)
+    
+    for i in range(1, target+1):
+        if mul % i == 0:
+            a, b = i, mul//i  # a =< b
+            if a + b == plus:
+                return [b, a]
