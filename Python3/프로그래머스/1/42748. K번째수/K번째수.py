@@ -1,7 +1,9 @@
 def solution(array, commands):
     answer = []
     
-    for a, b, x in commands:
-        lst = sorted(array[a-1:b])
-        answer.append(lst[x-1])
+    for a, b, c in commands:
+        target = array[a-1:b]
+        target.sort()
+        answer.append(target[c-1])
+    
     return answer
