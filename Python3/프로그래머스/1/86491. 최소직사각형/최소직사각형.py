@@ -1,12 +1,15 @@
+from heapq import heappop, heapify, heappush
+
 def solution(sizes):
-    lst1 = []
-    lst2 = []
+    # WLOG 가로 > 세로 고정
+    width, height = [], []
+    heapify(width)
+    heapify(height)
     
-    for s in sizes:
-        lst1.append(max(s))
-        lst2.append(min(s))
+    for w, h in sizes: 
+        heappush(width, -max(w, h))
+        heappush(height, -min(w, h))
         
-    lst1.sort(reverse=True)
-    lst2.sort(reverse=True)
-    
-    return lst1[0]*lst2[0]
+    return (heappop(width)*heappop(height))
+        
+        
