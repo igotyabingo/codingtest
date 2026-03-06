@@ -1,31 +1,26 @@
 from itertools import permutations
 
-def solution(numbers):
-    answer = 0
-    # numbers의 길이가 최대 7이므로 모든 경우의 수를 생각해보아도 시간 복잡도가 크지 않다.
-    digits = [i for i in numbers]
-    com = set()
-    
-    for l in range(1, len(numbers)+1):
-        lst = list(permutations(digits, l))
-        for l in lst:
-            com.add(int(''.join(l)))
-    
-    for c in com:
-        if check(c):
-            answer += 1
-    
-    return answer
-
-# 소수인지 판별하는 함수
-def check(n):
-    if n==1 or (n!=2 and n%2==0):
+def is_prime(number):
+    if number == 0 or number == 1: 
         return False
-    elif n==2:
-        return True
-    else:
-        for i in range(3, int(n**(1/2))+1):
-            if(n%i == 0):
-                return False
+    target = int(number ** (0.5))
+    for i in range(2, target+1):
+        if number % i == 0:
+            return False
     
     return True
+    
+def solution(numbers):
+    answer = 0
+    digits = [i for i in numbers]
+    s = set()
+    for l in range(1, len(digits)+1): # 길이가 1인 ~ len(numbers)인 조합 문자열을 모두 고려한다
+        lst = list(permutations(numbers, l))
+        for perm in lst:
+            s.add(int(''.join(perm)))
+
+    for i in s:
+        if is_prime(i): 
+            print(i)
+            answer += 1
+    return answer
