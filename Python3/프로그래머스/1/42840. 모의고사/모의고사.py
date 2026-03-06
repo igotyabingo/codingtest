@@ -1,27 +1,28 @@
 def solution(answers):
-    answer = [0, 0, 0]
-    ret = []
+    rank = []
+    # 패턴
+    # 1번: 5개 주기
+    # 2번: 8개 주기
+    # 3번: 10개 주기
+    score1, score2, score3 = 0, 0, 0
+    a1 = [1, 2, 3, 4, 5] * 2000
+    a2 = [2, 1, 2, 3, 2, 4, 2, 5] * 1250
+    a3 = [3, 3, 1, 1, 2, 2, 4, 4, 5, 5] * 1000
     
-    # 찍는 방식 -> 주기 존재 (5, 8, 10) -> 나머지로 점수 계산
-    a = [1, 2, 3, 4, 5]
-    b = [2, 1, 2, 3, 2, 4, 2, 5]
-    c = [3, 3, 1, 1, 2, 2, 4, 4, 5, 5]
+    for i, answer in enumerate(answers):
+        if answer == a1[i]: score1 += 1
+        if answer == a2[i]: score2 += 1
+        if answer == a3[i]: score3 += 1
     
-    for i in range(len(answers)):
-        ans = answers[i]
-        if (ans == a[i%5]):
-            answer[0] += 1
-        if (ans == b[i%8]):
-            answer[1] += 1
-        if (ans == c[i%10]):
-            answer[2] += 1
+    scores = [[score1, 1], [score2, 2], [score3, 3]]
+    scores = sorted(scores, key=lambda x: (-x[0], x[1]))
     
-    k = max(answer)
-    if(answer[0] == k):
-        ret.append(1)
-    if(answer[1] == k):
-        ret.append(2)
-    if(answer[2] == k):
-        ret.append(3)
-
-    return ret
+    rank.append(scores[0][1])
+    
+    if scores[1][0] == scores[0][0]:
+        rank.append(scores[1][1])
+        if scores[2][0] == scores[1][0]:
+            rank.append(scores[2][1])
+    
+    return rank
+    
