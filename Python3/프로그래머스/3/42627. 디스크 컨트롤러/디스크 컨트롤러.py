@@ -1,29 +1,39 @@
-from heapq import heappush, heappop, heapify
+import heapq
 from collections import deque
 
 def solution(jobs):
-    time = 0 
-    n = len(jobs)
-    # heapq = 대기 큐 => (작업 소요시간, 작업 요청시각, 작업 번호)로 저장 후 우선순위 비교
-    lst = []
+    l = len(jobs)
+    answer = 0
+    # jobs: [[0, 3], [1, 9], [3, 5]] -> i, 요청시각, 작업소요시간
     
-    job_list = deque()
-    jobs.sort(key=lambda x: x[0])
-    for i, job in enumerate(jobs):
-        job_list.append((job[1], job[0], i))
+    # 우선순위: 작업 소요시간 짧은 것 > 작업 요청시간 빠른 것 > 작업 번호가 작은 것
+    # python에서 튜플 비교 = 앞에서부터 사전식으로 수행함
+    # queue에 (작업 소요시간, 작업 요청시간, 작업 번호)로 heap 구성
 
-    t = 0
-    while job_list or lst: # 초 단위로 수행
-        # 1. 대기 큐에 삽입
-        while job_list and job_list[0][1] <= t:
-            heappush(lst, job_list.popleft())
-        
-        # 2. 하나 뽑기
-        if lst: 
-            x, y, z = heappop(lst)
-            t += x
-            time += (t-y)
-        else:
-            t += 1
+    queue = []
+    heapq.heapify(queue)
+    time = 0 # 현재 시간 계산
     
-    return time // n
+    for i, job in enumerate(jobs):
+        jobs[i] = (job[0], job[1], i)
+    jobs.sort()
+    
+    jobs = deque(jobs)
+    
+    
+    while queue or jobs: # 요청 시간, 작업 소요 시간
+        while jobs and jobs[0][0] <= time:
+            a, b, i = jobs.popleft()
+            heapq.heappush(queue, (b, a, i))
+        
+        if not queue and jobs: 
+            a, b, i = jobs.popleft()
+            heapq.heappush(queue, (b, a, i))
+        
+        t2, t1, idx = heapq.heappop(queue)
+        if time < t1:
+            time = t1
+        time += t2
+        answer += (time-t1)
+        
+    return answer // l
