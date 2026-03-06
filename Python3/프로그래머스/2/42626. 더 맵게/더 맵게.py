@@ -1,15 +1,17 @@
-from heapq import heappush, heappop, heapify
+from heapq import heapify, heappush, heappop
 
 def solution(scoville, K):
-    answer = 0 
-    heapify(scoville)
+    answer = 0
+    # using minheap -> heappush, heappop
+    heapify(scoville) # 기본 = minheap
     
-    while scoville[0] < K and len(scoville) >= 2:
-        x, y = heappop(scoville), heappop(scoville)
-        heappush(scoville, x+2*y)
+    while len(scoville) > 1 and scoville[0] < K:
         answer += 1
+        a = heappop(scoville)
+        b = heappop(scoville)
+        
+        heappush(scoville, a + b*2)
     
-    if scoville[0] < K:
+    if len(scoville) == 1 and scoville[0] < K:
         return -1
-    
     return answer
