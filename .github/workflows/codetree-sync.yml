@@ -28,9 +28,9 @@ jobs:
       - name: Sync codetree subtree
         run: |
           if [ ! -d "codetree" ]; then
-            git subtree add --prefix=codetree codetree main -m "chore(subtree): add codetree"
+            git subtree add --prefix=Codetree codetree main -m "chore(subtree): add codetree"
           else
-            git subtree pull --prefix=codetree codetree main -m "chore(subtree): sync codetree"
+            git subtree pull --prefix=Codetree codetree main -m "chore(subtree): sync codetree"
           fi
 
       - name: Push changes
